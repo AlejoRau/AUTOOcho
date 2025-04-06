@@ -20,9 +20,6 @@ public class UserService {
 
     @Autowired
     ClienteService clienteService ;
-    
-    private final PasswordEncoder passwordEncoder;
-
     public ClienteResponseDto saveUser(CreateClientDto createClientDto) throws Exception {
         try{ 
             CreateClientDto clientDto = new CreateClientDto(
@@ -30,7 +27,8 @@ public class UserService {
                 createClientDto.apellido(),
                 createClientDto.telefono(),
                 createClientDto.email(),
-                passwordEncoder.encode(createClientDto.contrasena()), 
+                
+                createClientDto.contrasena(),
                 createClientDto.ciudad()
                 ) ;
                

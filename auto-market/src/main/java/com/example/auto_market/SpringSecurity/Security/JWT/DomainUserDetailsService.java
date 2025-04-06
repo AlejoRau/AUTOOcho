@@ -40,8 +40,8 @@ public class DomainUserDetailsService implements UserDetailsService {
         log.debug("Authenticating {}", username);
       
         Cliente cliente = ClienteRepository.findByEmail(username.toLowerCase())
+        
         .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con email: " + username));
-
     return createSpringSecurityUser(cliente);
         }
                 
@@ -50,8 +50,8 @@ public class DomainUserDetailsService implements UserDetailsService {
     private UserDetails createSpringSecurityUser(  Cliente cliente ) {
         List<GrantedAuthority> grantedAuthorities = 
         new ArrayList<>(cliente.getAuthorities());
-                
-        return new User( cliente.getUsername(), cliente.getPassword(), grantedAuthorities );
+        User u =  new User (cliente.getUsername(), cliente.getPassword(), grantedAuthorities) ; 
+        return u;
     }
 
 }

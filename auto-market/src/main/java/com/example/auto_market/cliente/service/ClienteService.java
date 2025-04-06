@@ -13,4 +13,6 @@ public interface ClienteService {
     Page<Cliente> getAllClientes(Pageable pageable);
     ClienteResponseDto getClienteByEmail(String email);
     Cliente newClient(CreateClientDto createClientDto);
+    String getRolByEmail(String email);
+    
 }

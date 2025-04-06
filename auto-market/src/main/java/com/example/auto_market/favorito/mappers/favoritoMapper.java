@@ -22,11 +22,12 @@ public class favoritoMapper {
         
         String imagenPrincipal = null;
         if (publicacion.getImagenes() != null && !publicacion.getImagenes().isEmpty()) {
-            imagenPrincipal = publicacion.getImagenes().get(0).getImagen(); 
+            imagenPrincipal = publicacion.getImagenes().get(0).getUrl(); 
         }
         dto.setImagenPrincipal(imagenPrincipal);
 
         return dto;
-    }
+    
+}
 }
 

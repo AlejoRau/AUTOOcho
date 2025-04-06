@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.auto_market.SpringSecurity.Security.JWT.DomainUserDetailsService;
 import com.example.auto_market.SpringSecurity.Security.JWT.jwtFilter;
 import com.example.auto_market.SpringSecurity.Security.JWT.jwtService;
 
@@ -28,8 +29,21 @@ public class SecurityConfig {
 
     private final jwtService tokenProvider;
 
-    public SecurityConfig(jwtService tokenProvider) {
+   private final DomainUserDetailsService userDetailsService;
+    public SecurityConfig(jwtService tokenProvider, DomainUserDetailsService userDetailsService) {
         this.tokenProvider = tokenProvider;
+        this.userDetailsService = userDetailsService;
+        
+    }
+
+    
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http,PasswordEncoder passwordEncoder) throws Exception {
+        AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authBuilder
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder);
+        return authBuilder.build();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,6 +60,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
                 .requestMatchers("/api/registro").permitAll()
                 .requestMatchers("/", "/index.html").permitAll() 
+                .requestMatchers(HttpMethod.GET, "/api/publicaciones").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new jwtFilter(this.tokenProvider), UsernamePasswordAuthenticationFilter.class);

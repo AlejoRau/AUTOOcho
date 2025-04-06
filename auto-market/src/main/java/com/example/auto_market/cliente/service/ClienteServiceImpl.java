@@ -53,4 +53,12 @@ public class ClienteServiceImpl implements ClienteService {
         .orElseThrow(() -> new RuntimeException("Cliente no encontrado con email: " + Email));
 
     }
+
+
+
+    public String getRolByEmail(String Email){
+        return clienteRepository.findRolByEmail(Email)
+        .orElseThrow(() -> new RuntimeException("Cliente no encontrado con email: " + Email));
+
+    }
 }
